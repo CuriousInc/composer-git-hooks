@@ -1,9 +1,6 @@
 # composer-git-hooks
 
 [![Software License][badge-license]](LICENSE)
-[![Travis][badge-travis]][link-travis]
-[![Packagist][badge-packagist]][link-packagist]
-[![Download][badge-downloads]][link-packagist]
 
 > Manage git hooks easily in your composer configuration. This command line tool makes it easy to implement a consistent project-wide usage of git hooks. Specifying hooks in the composer file makes them available for every member of the project team. This provides a consistent environment and behavior for everyone which is great. It is also possible to use to manage git hooks globally for every repository on your computer. That way you have a reliable set of hooks crafted by yourself for every project you choose to work on.
 
@@ -185,10 +182,6 @@ Each command also has a flag `-v` to control verbosity for more detailed logs. C
 ### Testing Hooks
 
 Hooks can be tested with `cghooks ${hook}` before adding them. Example `cghooks pre-commit` runs the `pre-commit` hook.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
