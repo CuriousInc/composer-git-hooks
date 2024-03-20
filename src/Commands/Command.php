@@ -9,21 +9,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class Command extends SymfonyCommand
 {
-    private $output;
+    private OutputInterface $output;
 
-    protected $dir;
-    protected $composerDir;
-    protected $hooks;
-    protected $gitDir;
-    protected $lockDir;
-    protected $global;
-    protected $lockFile;
+    protected string $dir;
+    protected string $composerDir;
+    protected array $hooks;
+    protected string $gitDir;
+    protected string $lockDir;
+    protected bool $global;
+    protected string $lockFile;
 
     abstract protected function init(InputInterface $input);
 
     abstract protected function command();
 
-    final protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @throws \Exception
+     */
+    final protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->gitDir = $input->getOption('git-dir') ?: git_dir();
@@ -59,7 +62,7 @@ abstract class Command extends SymfonyCommand
     {
     }
 
-    protected function info($info)
+    protected function info($info): void
     {
         $info = str_replace('[', '<info>', $info);
         $info = str_replace(']', '</info>', $info);
@@ -67,7 +70,7 @@ abstract class Command extends SymfonyCommand
         $this->output->writeln($info);
     }
 
-    protected function debug($debug)
+    protected function debug($debug): void
     {
         $debug = str_replace('[', '<comment>', $debug);
         $debug = str_replace(']', '</comment>', $debug);
@@ -75,8 +78,8 @@ abstract class Command extends SymfonyCommand
         $this->output->writeln($debug, OutputInterface::VERBOSITY_VERBOSE);
     }
 
-    protected function error($error)
+    protected function error($error): void
     {
-        $this->output->writeln("<fg=red>{$error}</>");
+        $this->output->writeln("<fg=red>$error</>");
     }
 }

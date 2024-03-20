@@ -8,11 +8,11 @@ use Symfony\Component\Console\Input\InputOption;
 
 class RemoveCommand extends Command
 {
-    private $force;
-    private $lockFileHooks;
-    private $hooksToRemove;
+    private bool $force;
+    private array $lockFileHooks;
+    private array $hooksToRemove;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('remove')
@@ -35,7 +35,7 @@ class RemoveCommand extends Command
         ;
     }
 
-    protected function init(InputInterface $input)
+    protected function init(InputInterface $input): void
     {
         $this->force = $input->getOption('force');
         $this->lockFileHooks = file_exists($this->lockFile)
@@ -45,13 +45,13 @@ class RemoveCommand extends Command
         $this->hooksToRemove = empty($hooks) ? array_keys($this->hooks) : $hooks;
     }
 
-    protected function command()
+    protected function command(): void
     {
         foreach ($this->hooksToRemove as $hook) {
-            $filename = "{$this->dir}/hooks/{$hook}";
+            $filename = "$this->dir/hooks/$hook";
 
             if (! array_key_exists($hook, $this->lockFileHooks) && ! $this->force) {
-                $this->info("Skipped [{$hook}] hook - not present in lock file");
+                $this->info("Skipped [$hook] hook - not present in lock file");
                 $this->lockFileHooks = file_exists($this->lockFile)
                     ? array_flip(json_decode(file_get_contents($this->lockFile)))
                     : [];
@@ -60,12 +60,12 @@ class RemoveCommand extends Command
 
             if (array_key_exists($hook, $this->hooks) && is_file($filename)) {
                 unlink($filename);
-                $this->info("Removed [{$hook}] hook");
+                $this->info("Removed [$hook] hook");
                 unset($this->lockFileHooks[$hook]);
                 continue;
             }
 
-            $this->error("{$hook} hook does not exist");
+            $this->error("$hook hook does not exist");
         }
 
         file_put_contents($this->lockFile, json_encode(array_keys($this->lockFileHooks)));

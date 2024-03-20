@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class UpdateCommand extends AddCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('update')
@@ -20,7 +20,7 @@ class UpdateCommand extends AddCommand
         ;
     }
 
-    protected function init(InputInterface $input)
+    protected function init(InputInterface $input): void
     {
         $this->windows = $input->getOption('force-win') || is_windows();
         $this->force = true;
@@ -28,7 +28,7 @@ class UpdateCommand extends AddCommand
         $this->ignoreLock = false;
     }
 
-    protected function command()
+    protected function command(): void
     {
         if (empty($this->dir)) {
             if ($this->global) {
